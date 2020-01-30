@@ -68,6 +68,12 @@ def color_label(label):
     except ValueError:
         return torch.from_numpy(colored[np.newaxis, ...])
 
+def to_label(label):
+    label = label.clone().cpu().data.numpy()
+    label = label.transpose((1, 2, 0))
+    label = np.dot(label[..., :1], [1])
+    return label
+
 
 def print_log(global_step, epoch, local_count, count_inter, dataset_size, loss, time_inter):
     print('Step: {:>5} Train Epoch: {:>3} [{:>4}/{:>4} ({:3.1f}%)]    '

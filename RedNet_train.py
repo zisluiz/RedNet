@@ -20,7 +20,7 @@ from utils.utils import print_log
 from torch.optim.lr_scheduler import LambdaLR
 
 parser = argparse.ArgumentParser(description='RedNet Indoor Sementic Segmentation')
-parser.add_argument('--data-dir', default=None, metavar='DIR',
+parser.add_argument('--data-dir', default='../datasets/sunrgbd/SUNRGBD/', metavar='DIR',#None
                     help='path to SUNRGB-D')
 parser.add_argument('--cuda', action='store_true', default=False,
                     help='enables CUDA training')
@@ -42,7 +42,7 @@ parser.add_argument('--print-freq', '-p', default=200, type=int,
                     metavar='N', help='print batch frequency (default: 50)')
 parser.add_argument('--save-epoch-freq', '-s', default=5, type=int,
                     metavar='N', help='save epoch frequency (default: 5)')
-parser.add_argument('--last-ckpt', default='', type=str, metavar='PATH',
+parser.add_argument('--last-ckpt', default=None, type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
 parser.add_argument('--lr-decay-rate', default=0.8, type=float,
                     help='decay rate of learning rate (default: 0.8)')
@@ -52,7 +52,7 @@ parser.add_argument('--ckpt-dir', default='./model/', metavar='DIR',
                     help='path to save checkpoints')
 parser.add_argument('--summary-dir', default='./summary', metavar='DIR',
                     help='path to save summary')
-parser.add_argument('--checkpoint', action='store_true', default=False,
+parser.add_argument('--checkpoint', action='store_true', default=True,#False
                     help='Using Pytorch checkpoint or not')
 
 args = parser.parse_args()
@@ -101,7 +101,7 @@ def train():
     writer = SummaryWriter(args.summary_dir)
 
     for epoch in range(int(args.start_epoch), args.epochs):
-
+        optimizer.step()
         scheduler.step(epoch)
         local_count = 0
         last_count = 0
@@ -119,7 +119,6 @@ def train():
             pred_scales = model(image, depth, args.checkpoint)
             loss = CEL_weighted(pred_scales, target_scales)
             loss.backward()
-            optimizer.step()
             local_count += image.data.shape[0]
             global_step += 1
             if global_step % args.print_freq == 0 or global_step == 1:
