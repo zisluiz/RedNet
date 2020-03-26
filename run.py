@@ -36,12 +36,19 @@ parser.add_argument('--last-ckpt', default='', type=str, metavar='PATH',
 sys.argv.extend(['--cuda', '--last-ckpt', 'checkpoint/rednet_ckpt_ori.pth'])
 
 args = parser.parse_args()
-device = torch.device("cuda:0" if args.cuda and torch.cuda.is_available() else "cpu")
 image_w = 640
 image_h = 480
 def inference():
+    useGpu = True
+
+    fileName = "run_"
+    if not useGpu:
+        fileName += "cpu_"
+
+    device = torch.device("cuda:0" if useGpu and torch.cuda.is_available() else "cpu")
+
     os.makedirs('results', exist_ok=True)
-    f = open("results/run_"+str(int(round(time.time() * 1000)))+".txt", "w+")
+    f = open("results/"+fileName+str(int(round(time.time() * 1000)))+".txt", "w+")
     f.write('=== Start time: '+str(datetime.now())+'\n')
 
     p = psutil.Process(os.getpid())
@@ -78,8 +85,14 @@ def inference():
         depth = imageio.imread(parentDatasetDir + '/depth/' + depthImageName)
 
         if datasetName == "active_vision" or datasetName == "putkk":
-            image = image[0:1080, 419:1499]
-            depth = depth[0:1080, 419:1499]
+            image = image[0:1080, 240:1680]
+            depth = depth[0:1080, 240:1680]
+        elif datasetName == "semantics3d_mod":
+            image = image[270:1080, 0:1080]
+            depth = depth[270:1080, 0:1080]
+        elif datasetName == "semantics3d_raw":
+            image = image[64:1024, 0:1280]
+            depth = depth[64:1024, 0:1280]
 
         # Bi-linear
         image = skimage.transform.resize(image, (image_h, image_w), order=1,
@@ -163,8 +176,14 @@ def inference():
         depth = imageio.imread(parentDatasetDir + '/depth/' + depthImageName)
 
         if datasetName == "active_vision" or datasetName == "putkk":
-            image = image[0:1080, 419:1499]
-            depth = depth[0:1080, 419:1499]
+            image = image[0:1080, 240:1680]
+            depth = depth[0:1080, 240:1680]
+        elif datasetName == "semantics3d_mod":
+            image = image[270:1080, 0:1080]
+            depth = depth[270:1080, 0:1080]
+        elif datasetName == "semantics3d_raw":
+            image = image[64:1024, 0:1280]
+            depth = depth[64:1024, 0:1280]
 
         # Bi-linear
         image = skimage.transform.resize(image, (image_h, image_w), order=1,
