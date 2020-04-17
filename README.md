@@ -6,7 +6,7 @@ This file also collect some statistics at run. Added "only cpu" option.
 
 Added Dockerfile (builded with name "obeach") and docker-compose.yml with a image with compatible system requirements to run this project.
 
-Results obtained with "mestrado" dataset will be public available soon, compared with others semantic sgmentation algorithms.     
+Results obtained with "mestrado" dataset will be public available soon, comparing this approach with others semantic sgmentation algorithms.     
 
 # RedNet - original readme
 
