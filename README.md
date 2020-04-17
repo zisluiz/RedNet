@@ -1,6 +1,14 @@
+#RedNet Changes on this repository
+
+Added a run.py file that uses RedNet prediction over a dataset named "mestrado", subdivided into four sets.
+
+This file also collect some statistics at run. Added "only cpu" option. 
+
+Added Dockerfile (builded with name "obeach") and docker-compose.yml with a image with compatible system requirements to run this project.  
+
 # RedNet
 
-This repository contains the official implementation of the RedNet (Residual Encoder-Decoder Architecture). It turns out that the simple encoder-decoder structure is powerful when combined with residual learning. For further details of the network, please refer to our article [RedNet: Residual Encoder-Decoder Network for indoor RGB-D Semantic Segmentation](http://bit.ly/2MrIT78).
+This repository use the official implementation of the RedNet (Residual Encoder-Decoder Architecture). It turns out that the simple encoder-decoder structure is powerful when combined with residual learning. For further details of the network, please refer to our article [RedNet: Residual Encoder-Decoder Network for indoor RGB-D Semantic Segmentation](http://bit.ly/2MrIT78).
 
 ![alt text](figure/overall_structure.png  "Overall structure of RedNet")
 
